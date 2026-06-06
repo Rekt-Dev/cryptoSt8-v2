@@ -1,13 +1,21 @@
+import { useState } from "react";
+import FearGreedModal from "./FearGreedModal";
+
 const COLORS = { "Extreme Fear":"#f87171", "Fear":"#fb923c", "Neutral":"#fbbf24", "Greed":"#4ade80", "Extreme Greed":"#22c55e" };
 
 export default function FearGreed({ fearGreed }) {
+  const [open, setOpen] = useState(false);
   if (!fearGreed) return null;
   const val = Number(fearGreed.value);
   const color = COLORS[fearGreed.value_classification] ?? "#94a3b8";
   const angle = (val / 100) * 180 - 90;
 
   return (
-    <div style={S.card}>
+    <>
+    <div style={{ ...S.card, cursor:"pointer" }}
+      onClick={() => setOpen(true)}
+      onMouseEnter={e => e.currentTarget.style.borderColor = "#2a2a2a"}
+      onMouseLeave={e => e.currentTarget.style.borderColor = "#1a1a1a"}>
       <div style={S.title}>Fear & Greed</div>
       <div style={{ position:"relative", width:140, margin:"0 auto" }}>
         <svg viewBox="0 0 140 80" width={140} height={80}>
@@ -32,6 +40,8 @@ export default function FearGreed({ fearGreed }) {
         </div>
       </div>
     </div>
+    {open && <FearGreedModal onClose={() => setOpen(false)} />}
+    </>
   );
 }
 

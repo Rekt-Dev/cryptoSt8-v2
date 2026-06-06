@@ -82,14 +82,23 @@ export default function App() {
           <TopMovers markets={markets} />
         </div>
       </div>
+
+      {/* ── Footer ── */}
+      <div style={S.footer}>
+        <span style={S.footerBrand}>⚔ Invictus Crypto Strategies</span>
+        <span style={S.footerMeta}>Data via CoinGecko · Updates every 60s · Not financial advice</span>
+      </div>
     </div>
   );
 }
 
 const S = {
-  header: { padding:"16px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid #1a1a1a" },
-  title:  { fontSize:22, fontWeight:800, color:"#fff", letterSpacing:"0.05em" },
-  sub:    { fontSize:11, color:"#475569", marginTop:3 },
-  grid:   { display:"flex", gap:16, padding:"16px 20px", flexWrap:"wrap" },
-  col:    { display:"flex", flexDirection:"column", gap:12, flex:1, minWidth:220 },
+  header:      { padding:"16px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid #1a1a1a" },
+  title:       { fontSize:22, fontWeight:800, color:"#fff", letterSpacing:"0.05em" },
+  sub:         { fontSize:11, color:"#475569", marginTop:3 },
+  grid:        { display:"flex", gap:16, padding:"16px 20px", flexWrap:"wrap" },
+  col:         { display:"flex", flexDirection:"column", gap:12, flex:1, minWidth:220 },
+  footer:      { borderTop:"1px solid #1a1a1a", padding:"14px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 },
+  footerBrand: { fontSize:13, fontWeight:700, color:"#f1f5f9", letterSpacing:"0.04em" },
+  footerMeta:  { fontSize:11, color:"#334155" },
 };

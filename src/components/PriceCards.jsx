@@ -1,7 +1,11 @@
+import { useState } from "react";
+import CoinModal from "./CoinModal";
+
 const fmt = (n) => n >= 1 ? `$${Number(n).toLocaleString(undefined,{maximumFractionDigits:2})}` : `$${Number(n).toFixed(5)}`;
 const fmtB = n => `$${(n/1e9).toFixed(1)}B`;
 
 export default function PriceCards({ markets }) {
+  const [selectedCoin, setSelectedCoin] = useState(null);
   if (!markets.length) return <div style={{ color:"#475569" }}>Loading…</div>;
   return (
     <div>
@@ -12,7 +16,10 @@ export default function PriceCards({ markets }) {
           const up7 = c.price_change_percentage_7d_in_currency >= 0;
           const spark = c.sparkline_in_7d?.price ?? [];
           return (
-            <div key={c.id} style={S.card}>
+            <div key={c.id} style={{ ...S.card, cursor:"pointer" }}
+              onClick={() => setSelectedCoin(c.id)}
+              onMouseEnter={e => e.currentTarget.style.borderColor = "#2a2a2a"}
+              onMouseLeave={e => e.currentTarget.style.borderColor = "#1a1a1a"}>
               <div style={S.top}>
                 <div style={S.left}>
                   <img src={c.image} alt={c.symbol} style={S.icon} />
@@ -39,6 +46,7 @@ export default function PriceCards({ markets }) {
           );
         })}
       </div>
+      {selectedCoin && <CoinModal coinId={selectedCoin} onClose={() => setSelectedCoin(null)} />}
     </div>
   );
 }

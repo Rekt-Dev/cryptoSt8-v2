@@ -32,3 +32,17 @@ export async function fetchFearGreed() {
   const d = await r.json();
   return d.data?.[0];
 }
+
+export async function fetchCoinDetail(id) {
+  const [detail, chart] = await Promise.all([
+    fetch(`${BASE}/coins/${id}?localization=false&tickers=false&community_data=false&developer_data=false&${qs}`).then(r => r.json()),
+    fetch(`${BASE}/coins/${id}/market_chart?vs_currency=usd&days=30&${qs}`).then(r => r.json()),
+  ]);
+  return { detail, chart };
+}
+
+export async function fetchFearGreedHistory() {
+  const r = await fetch("https://api.alternative.me/fng/?limit=30&format=json");
+  const d = await r.json();
+  return (d.data ?? []).reverse();
+}
