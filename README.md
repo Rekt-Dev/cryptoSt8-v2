@@ -4,7 +4,7 @@
 
 ## 🚀 Live Demo
 
-**[https://stirring-cactus-62412e.netlify.app](https://stirring-cactus-62412e.netlify.app)**
+**[https://invictus-crypto.netlify.app](https://invictus-crypto.netlify.app)**
 
 ## Overview
 
