@@ -2,7 +2,7 @@ const fmt = (n) => n >= 1 ? `$${Number(n).toLocaleString(undefined,{maximumFract
 
 export default function TopMovers({ markets }) {
   if (!markets.length) return null;
-  const sorted = [...markets].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+  const sorted = [...markets].filter(c => c.price_change_percentage_24h != null).sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
   const gainers = sorted.slice(0, 3);
   const losers  = sorted.slice(-3).reverse();
 
@@ -28,7 +28,7 @@ function Section({ title, coins }) {
               <div style={S.price}>{fmt(c.current_price)}</div>
             </div>
             <div style={{ ...S.chg, color: up ? "#4ade80" : "#f87171" }}>
-              {up ? "+" : ""}{c.price_change_percentage_24h.toFixed(2)}%
+              {up ? "+" : ""}{(c.price_change_percentage_24h ?? 0).toFixed(2)}%
             </div>
           </div>
         );
