@@ -95,16 +95,16 @@ export default function TradMarkets({ interval }) {
 }
 
 const S = {
-  wrap:   { padding:"16px 20px 32px", borderTop:"1px solid #111" },
+  wrap:   { padding:"16px 20px", borderTop:"1px solid #1a1a1a" },
   header: { display:"flex", alignItems:"baseline", gap:12, marginBottom:12 },
-  label:  { fontSize:10, color:"#334155", textTransform:"uppercase", letterSpacing:"0.12em" },
-  sub:    { fontSize:10, color:"#1e293b", fontStyle:"italic" },
+  label:  { fontSize:10, color:"#475569", textTransform:"uppercase", letterSpacing:"0.12em" },
+  sub:    { fontSize:10, color:"#334155", fontStyle:"italic" },
   grid:   { display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(180px, 1fr))", gap:10 },
-  card:   { background:"#0a0a0a", border:"1px solid #141414", borderRadius:12, padding:"12px 14px", cursor:"pointer" },
+  card:   { background:"#0f0f0f", border:"1px solid #1a1a1a", borderRadius:12, padding:"12px 14px", cursor:"pointer", transition:"border-color 0.15s" },
   top:    { display:"flex", justifyContent:"space-between", alignItems:"flex-start" },
-  name:   { fontSize:13, fontWeight:600, color:"#64748b" },
-  sym:    { fontSize:10, color:"#334155", textTransform:"uppercase", marginTop:2 },
+  name:   { fontSize:13, fontWeight:600, color:"#f1f5f9" },
+  sym:    { fontSize:10, color:"#475569", textTransform:"uppercase", marginTop:2 },
   right:  { textAlign:"right" },
-  price:  { fontSize:14, fontWeight:700, color:"#64748b" },
+  price:  { fontSize:14, fontWeight:700, color:"#f1f5f9" },
   chg:    { fontSize:11, fontWeight:600, marginTop:2 },
 };

@@ -11,7 +11,9 @@ import Trending    from "./components/Trending";
 import TopMovers   from "./components/TopMovers";
 import AlertsPanel  from "./components/AlertsPanel";
 import TradMarkets  from "./components/TradMarkets";
-import MacroSection from "./components/MacroSection";
+import MacroSection   from "./components/MacroSection";
+import DeribitSection from "./components/DeribitSection";
+import EconCalendar   from "./components/EconCalendar";
 
 const REFRESH = 60_000;
 
@@ -122,7 +124,9 @@ export default function App() {
         </div>
       </div>
 
+      <DeribitSection />
       <TradMarkets interval={interval} />
+      <EconCalendar />
       <MacroSection />
 
       <div style={S.footer}>

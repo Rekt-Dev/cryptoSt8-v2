@@ -59,16 +59,16 @@ export default function MacroSection() {
 }
 
 const S = {
-  wrap:     { padding:"16px 20px 32px", borderTop:"1px solid #0d0d0d" },
+  wrap:     { padding:"16px 20px 32px", borderTop:"1px solid #1a1a1a" },
   header:   { display:"flex", alignItems:"baseline", gap:12, marginBottom:16 },
-  title:    { fontSize:10, color:"#1e293b", textTransform:"uppercase", letterSpacing:"0.12em" },
-  sub:      { fontSize:10, color:"#172033", fontStyle:"italic" },
+  title:    { fontSize:10, color:"#475569", textTransform:"uppercase", letterSpacing:"0.12em" },
+  sub:      { fontSize:10, color:"#334155", fontStyle:"italic" },
   section:  { marginBottom:20 },
-  secLabel: { fontSize:9, color:"#1e293b", textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 },
+  secLabel: { fontSize:9, color:"#334155", textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 },
   grid:     { display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px, 1fr))", gap:8 },
-  card:     { background:"#080808", border:"1px solid #0f0f0f", borderRadius:10, padding:"10px 12px" },
-  label:    { fontSize:10, color:"#334155", marginBottom:4 },
-  value:    { fontSize:15, fontWeight:700, color:"#475569" },
-  bottom:   { display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:4 },
-  date:     { fontSize:9, color:"#1e293b" },
+  card:     { background:"#0f0f0f", border:"1px solid #1a1a1a", borderRadius:12, padding:"12px 14px" },
+  label:    { fontSize:11, color:"#475569", marginBottom:4 },
+  value:    { fontSize:18, fontWeight:700, color:"#f1f5f9" },
+  bottom:   { display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:6 },
+  date:     { fontSize:9, color:"#334155" },
 };
