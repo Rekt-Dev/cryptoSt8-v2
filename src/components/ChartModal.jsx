@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // CoinGecko ID → TradingView symbol
 const SYMBOL_MAP = {
@@ -57,9 +57,23 @@ const SYMBOL_MAP = {
   "broccoli-714":      "BINANCE:BROCCOLIUSDT",
 };
 
-export default function ChartModal({ coin, onClose }) {
+const fmt = (n) => n >= 1
+  ? Number(n).toLocaleString(undefined, { maximumFractionDigits: 2 })
+  : Number(n).toFixed(5);
+
+export default function ChartModal({ coin, onClose, interval = "240", onAddAlert }) {
   const containerRef = useRef(null);
   const symbol = SYMBOL_MAP[coin.id] ?? `BYBIT:${coin.symbol.toUpperCase()}USDT`;
+
+  const [showAlertForm, setShowAlertForm] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const [condition,     setCondition]     = useState("above");
+  const [price,         setPrice]         = useState(() => fmt(coin.current_price));
 
   useEffect(() => {
     const container = containerRef.current;
@@ -79,7 +93,7 @@ export default function ChartModal({ coin, onClose }) {
     script.innerHTML = JSON.stringify({
       autosize: true,
       symbol,
-      interval: "240",
+      interval,
       timezone: "Etc/UTC",
       theme: "dark",
       style: "1",
@@ -96,19 +110,59 @@ export default function ChartModal({ coin, onClose }) {
     container.appendChild(script);
 
     return () => { container.innerHTML = ""; };
-  }, [symbol]);
+  }, [symbol, interval]);
+
+  function handleAddAlert(e) {
+    e.preventDefault();
+    if (!price) return;
+    onAddAlert?.(coin.id, coin.name, coin.symbol, coin.image, condition, price);
+    setShowAlertForm(false);
+    setPrice(fmt(coin.current_price));
+  }
 
   return (
     <div style={S.overlay} onClick={onClose}>
       <div style={S.modal} onClick={e => e.stopPropagation()}>
+
+        {/* header */}
         <div style={S.header}>
           <div style={{ display:"flex", alignItems:"center", gap:8 }}>
             <img src={coin.image} alt={coin.symbol} style={{ width:24, height:24, borderRadius:"50%" }} />
             <span style={S.title}>{coin.name}</span>
             <span style={S.sym}>{coin.symbol.toUpperCase()}/USDT</span>
+            <span style={{ fontSize:12, color:"#475569" }}>
+              ${fmt(coin.current_price)}
+            </span>
           </div>
-          <button style={S.close} onClick={onClose}>✕</button>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <button style={S.alertBtn} onClick={() => setShowAlertForm(v => !v)}>
+              🔔 Set Alert
+            </button>
+            <button style={S.close} onClick={onClose}>✕</button>
+          </div>
         </div>
+
+        {/* inline alert form */}
+        {showAlertForm && (
+          <form onSubmit={handleAddAlert} style={S.alertForm}>
+            <select style={S.input} value={condition} onChange={e => setCondition(e.target.value)}>
+              <option value="above">Above</option>
+              <option value="below">Below</option>
+            </select>
+            <input
+              style={{ ...S.input, width:160 }}
+              type="number"
+              step="any"
+              value={price}
+              onChange={e => setPrice(e.target.value)}
+              autoFocus
+            />
+            <button style={S.addBtn} type="submit">+ Add</button>
+            <button style={S.cancelBtn} type="button" onClick={() => setShowAlertForm(false)}>Cancel</button>
+          </form>
+        )}
+
+        {/* chart */}
         <div
           ref={containerRef}
           className="tradingview-widget-container"
@@ -133,7 +187,12 @@ const S = {
     display:"flex", justifyContent:"space-between", alignItems:"center",
     padding:"12px 16px", borderBottom:"1px solid #1a1a1a", flexShrink:0,
   },
-  title: { fontSize:15, fontWeight:700, color:"#f1f5f9" },
-  sym:   { fontSize:11, color:"#475569", marginLeft:4 },
-  close: { background:"none", border:"none", color:"#475569", fontSize:16, cursor:"pointer", padding:"4px 8px" },
+  title:    { fontSize:15, fontWeight:700, color:"#f1f5f9" },
+  sym:      { fontSize:11, color:"#475569", marginLeft:4 },
+  close:    { background:"none", border:"none", color:"#475569", fontSize:16, cursor:"pointer", padding:"4px 8px" },
+  alertBtn: { background:"#1a1a1a", border:"1px solid #2a2a2a", borderRadius:8, color:"#f1f5f9", padding:"5px 12px", fontSize:12, cursor:"pointer" },
+  alertForm:{ display:"flex", alignItems:"center", gap:8, padding:"10px 16px", borderBottom:"1px solid #1a1a1a", background:"#0a0a0a", flexShrink:0 },
+  input:    { background:"#1a1a1a", border:"1px solid #2a2a2a", borderRadius:6, color:"#f1f5f9", padding:"6px 10px", fontSize:13, outline:"none" },
+  addBtn:   { background:"#16a34a", border:"none", borderRadius:6, color:"#fff", padding:"6px 14px", fontSize:13, cursor:"pointer", fontWeight:600 },
+  cancelBtn:{ background:"none", border:"none", color:"#475569", padding:"6px 8px", fontSize:13, cursor:"pointer" },
 };

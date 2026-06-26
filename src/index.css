@@ -6,3 +6,8 @@ html, body, #root { min-height: 100%; background: #080808; color: #e2e8f0; font-
 }
 
 select option { background: #1a1a1a; color: #f1f5f9; }
+
+@keyframes flash-up   { 0%,100% { color: inherit } 30% { color: #4ade80 } }
+@keyframes flash-down { 0%,100% { color: inherit } 30% { color: #f87171 } }
+.flash-up   { animation: flash-up   0.6s ease }
+.flash-down { animation: flash-down 0.6s ease }

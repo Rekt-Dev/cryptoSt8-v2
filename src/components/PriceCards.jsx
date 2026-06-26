@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChartModal from "./ChartModal";
 
 const fmt  = (n) => n >= 1 ? `$${Number(n).toLocaleString(undefined,{maximumFractionDigits:2})}` : `$${Number(n).toFixed(5)}`;
 const fmtB = (n) => `$${(n/1e9).toFixed(1)}B`;
 
-export default function PriceCards({ markets }) {
+export default function PriceCards({ markets, interval, openChart, onAddAlert, flashOn }) {
   const [chartCoin, setChartCoin] = useState(null);
+  const [flashes,   setFlashes]   = useState({});
+  const prevPrices  = useRef({});
+
+  useEffect(() => { if (openChart) setChartCoin(openChart); }, [openChart]);
+
+  useEffect(() => {
+    const newFlashes = {};
+    markets.forEach(c => {
+      const prev = prevPrices.current[c.id];
+      if (prev !== undefined && prev !== c.current_price) {
+        newFlashes[c.id] = c.current_price > prev ? "flash-up" : "flash-down";
+      }
+      prevPrices.current[c.id] = c.current_price;
+    });
+    if (Object.keys(newFlashes).length) {
+      setFlashes(newFlashes);
+      const t = setTimeout(() => setFlashes({}), 650);
+      return () => clearTimeout(t);
+    }
+  }, [markets]);
 
   if (!markets.length) return <div style={{ color:"#475569" }}>Loading…</div>;
   return (
@@ -31,13 +51,13 @@ export default function PriceCards({ markets }) {
                     </div>
                   </div>
                   <div style={S.right}>
-                    <div style={S.price}>{fmt(c.current_price)}</div>
+                    <div style={S.price} className={flashOn ? (flashes[c.id] || "") : ""}>{fmt(c.current_price)}</div>
                     <div style={{ ...S.chg, color: up ? "#4ade80" : "#f87171" }}>
                       {up ? "▲" : "▼"} {Math.abs(c.price_change_percentage_24h).toFixed(2)}%
                     </div>
                   </div>
                 </div>
-                <Sparkline prices={spark} up={up} />
+                <Sparkline prices={spark} up={up} interval={interval} />
                 <div style={S.bottom}>
                   <span style={S.meta}>MCap {fmtB(c.market_cap)}</span>
                   <span style={{ ...S.meta, color: up7 ? "#4ade80" : "#f87171" }}>
@@ -50,17 +70,20 @@ export default function PriceCards({ markets }) {
         </div>
       </div>
 
-      {chartCoin && <ChartModal coin={chartCoin} onClose={() => setChartCoin(null)} />}
+      {chartCoin && <ChartModal coin={chartCoin} interval={interval} onClose={() => setChartCoin(null)} onAddAlert={onAddAlert} />}
     </>
   );
 }
 
-function Sparkline({ prices, up }) {
+const SLICE = { "15": 8, "60": 24, "240": 48, "D": 168 };
+
+function Sparkline({ prices, up, interval }) {
   if (!prices.length) return null;
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
+  const sliced = prices.slice(-(SLICE[interval] ?? 168));
+  const min = Math.min(...sliced);
+  const max = Math.max(...sliced);
   const w = 120, h = 36;
-  const pts = prices.filter((_, i) => i % 4 === 0).map((p, i, arr) => {
+  const pts = sliced.filter((_, i) => i % Math.max(1, Math.floor(sliced.length / 30)) === 0).map((p, i, arr) => {
     const x = (i / (arr.length - 1)) * w;
     const y = h - ((p - min) / (max - min || 1)) * h;
     return `${x},${y}`;
