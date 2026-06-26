@@ -61,9 +61,9 @@ const fmt = (n) => n >= 1
   ? Number(n).toLocaleString(undefined, { maximumFractionDigits: 2 })
   : Number(n).toFixed(5);
 
-export default function ChartModal({ coin, onClose, interval = "240", onAddAlert }) {
+export default function ChartModal({ coin, onClose, interval = "240", onAddAlert, symbolOverride }) {
   const containerRef = useRef(null);
-  const symbol = SYMBOL_MAP[coin.id] ?? `BYBIT:${coin.symbol.toUpperCase()}USDT`;
+  const symbol = symbolOverride ?? SYMBOL_MAP[coin.id] ?? `BYBIT:${coin.symbol.toUpperCase()}USDT`;
 
   const [showAlertForm, setShowAlertForm] = useState(false);
 

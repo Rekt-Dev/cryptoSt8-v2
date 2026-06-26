@@ -9,7 +9,9 @@ import PriceCards  from "./components/PriceCards";
 import FearGreed   from "./components/FearGreed";
 import Trending    from "./components/Trending";
 import TopMovers   from "./components/TopMovers";
-import AlertsPanel from "./components/AlertsPanel";
+import AlertsPanel  from "./components/AlertsPanel";
+import TradMarkets  from "./components/TradMarkets";
+import MacroSection from "./components/MacroSection";
 
 const REFRESH = 60_000;
 
@@ -119,6 +121,9 @@ export default function App() {
           <TopMovers markets={markets} />
         </div>
       </div>
+
+      <TradMarkets interval={interval} />
+      <MacroSection />
 
       <div style={S.footer}>
         <span style={S.footerBrand}>⚔ Invictus Crypto Strategies</span>
