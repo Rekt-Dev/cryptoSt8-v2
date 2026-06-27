@@ -1,6 +1,9 @@
 import { useFredData, SECTION_LABELS } from "../hooks/useFredData";
 
-const fmtVal = (v, unit) => {
+const fmtVal = (v, unit, id) => {
+  // ICSA (jobless claims) and HOUST, EXHOSLUSM495S come in raw numbers from FRED
+  const rawIds = ["ICSA", "HOUST", "EXHOSLUSM495S"];
+  if (unit === "K" && rawIds.includes(id)) return `${Math.round(Number(v) / 1000).toLocaleString()}K`;
   if (unit === "K") return `${Number(v).toLocaleString()}K`;
   if (unit === "%") return `${Number(v).toFixed(2)}%`;
   return Number(v).toFixed(2);
@@ -14,7 +17,7 @@ function MacroCard({ item }) {
   return (
     <div style={S.card}>
       <div style={S.label}>{item.label}</div>
-      <div style={S.value}>{fmtVal(item.value, item.unit)}</div>
+      <div style={S.value}>{fmtVal(item.value, item.unit, item.id)}</div>
       <div style={S.bottom}>
         {change != null && (
           <span style={{ color: up ? "#4ade80" : "#f87171", fontSize:10 }}>
@@ -65,7 +68,7 @@ const S = {
   sub:      { fontSize:10, color:"#334155", fontStyle:"italic" },
   section:  { marginBottom:20 },
   secLabel: { fontSize:9, color:"#334155", textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 },
-  grid:     { display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px, 1fr))", gap:8 },
+  grid:     { display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))", gap:8 },
   card:     { background:"#0f0f0f", border:"1px solid #1a1a1a", borderRadius:12, padding:"12px 14px" },
   label:    { fontSize:11, color:"#475569", marginBottom:4 },
   value:    { fontSize:18, fontWeight:700, color:"#f1f5f9" },
