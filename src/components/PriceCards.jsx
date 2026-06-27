@@ -97,7 +97,7 @@ function Sparkline({ prices, up, interval }) {
 
 const S = {
   title: { fontSize:10, color:"#475569", textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:10 },
-  grid:  { display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(200px, 1fr))", gap:10 },
+  grid:  { display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:10 },
   card:  { background:"#0f0f0f", border:"1px solid #1a1a1a", borderRadius:12, padding:"12px 14px", cursor:"pointer", transition:"border-color 0.15s" },
   top:   { display:"flex", justifyContent:"space-between", alignItems:"flex-start" },
   left:  { display:"flex", alignItems:"center", gap:8 },
