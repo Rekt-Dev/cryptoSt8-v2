@@ -32,33 +32,33 @@ export default function PriceCards({ markets, interval, openChart, onAddAlert, f
     <>
       <div>
         <div style={S.title}>Markets</div>
-        <div style={S.grid}>
+        <div style={S.grid} className="coin-grid">
           {markets.map(c => {
             const up  = c.price_change_percentage_24h >= 0;
             const up7 = c.price_change_percentage_7d_in_currency >= 0;
             const spark = c.sparkline_in_7d?.price ?? [];
             return (
-              <div key={c.id} style={S.card}
+              <div key={c.id} style={S.card} className="coin-card"
                 onClick={() => setChartCoin(c)}
                 onMouseEnter={e => e.currentTarget.style.borderColor = "#2a2a2a"}
                 onMouseLeave={e => e.currentTarget.style.borderColor = "#1a1a1a"}>
                 <div style={S.top}>
                   <div style={S.left}>
-                    <img src={c.image} alt={c.symbol} style={S.icon} />
+                    <img src={c.image} alt={c.symbol} style={S.icon} className="coin-icon" />
                     <div>
-                      <div style={S.name}>{c.name}</div>
-                      <div style={S.sym}>{c.symbol.toUpperCase()}</div>
+                      <div style={S.name} className="coin-name">{c.name}</div>
+                      <div style={S.sym}  className="coin-sym">{c.symbol.toUpperCase()}</div>
                     </div>
                   </div>
                   <div style={S.right}>
-                    <div style={S.price} className={flashOn ? (flashes[c.id] || "") : ""}>{fmt(c.current_price)}</div>
-                    <div style={{ ...S.chg, color: up ? "#4ade80" : "#f87171" }}>
+                    <div style={S.price} className={`coin-price ${flashOn ? (flashes[c.id] || "") : ""}`}>{fmt(c.current_price)}</div>
+                    <div style={{ ...S.chg, color: up ? "#4ade80" : "#f87171" }} className="coin-chg">
                       {up ? "▲" : "▼"} {Math.abs(c.price_change_percentage_24h).toFixed(2)}%
                     </div>
                   </div>
                 </div>
-                <Sparkline prices={spark} up={up} interval={interval} />
-                <div style={S.bottom}>
+                <div className="coin-spark"><Sparkline prices={spark} up={up} interval={interval} /></div>
+                <div style={S.bottom} className="coin-meta">
                   <span style={S.meta}>MCap {fmtB(c.market_cap)}</span>
                   <span style={{ ...S.meta, color: up7 ? "#4ade80" : "#f87171" }}>
                     7d {up7 ? "+" : ""}{c.price_change_percentage_7d_in_currency?.toFixed(2)}%

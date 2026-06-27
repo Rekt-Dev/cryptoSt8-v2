@@ -111,17 +111,16 @@ export default function App() {
         </div>
       </div>
 
-      <div style={S.grid}>
-        <div style={S.col} className="side-col">
-          <FearGreed fearGreed={fearGreed} />
-          <Trending trending={trending} />
-        </div>
-        <div style={{ ...S.col, flex:2 }}>
-          <PriceCards markets={markets} interval={interval} openChart={tickerCoin} onAddAlert={addAlert} flashOn={flashOn} />
-        </div>
-        <div style={S.col} className="side-col">
-          <TopMovers markets={markets} />
-        </div>
+      {/* side widgets row — hidden on mobile */}
+      <div style={S.widgets} className="side-col">
+        <FearGreed fearGreed={fearGreed} />
+        <Trending trending={trending} />
+        <TopMovers markets={markets} />
+      </div>
+
+      {/* full-width coin grid */}
+      <div style={S.coinWrap}>
+        <PriceCards markets={markets} interval={interval} openChart={tickerCoin} onAddAlert={addAlert} flashOn={flashOn} />
       </div>
 
       <DeribitSection />
@@ -154,8 +153,8 @@ const S = {
   header:      { padding:"16px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid #1a1a1a" },
   title:       { fontSize:22, fontWeight:800, color:"#fff", letterSpacing:"0.05em" },
   sub:         { fontSize:11, color:"#475569", marginTop:3 },
-  grid:        { display:"flex", gap:16, padding:"16px 20px", flexWrap:"wrap" },
-  col:         { display:"flex", flexDirection:"column", gap:12, flex:1, minWidth:220 },
+  widgets:     { display:"flex", gap:16, padding:"12px 20px", flexWrap:"wrap", borderBottom:"1px solid #1a1a1a" },
+  coinWrap:    { padding:"16px 20px" },
   footer:      { borderTop:"1px solid #1a1a1a", padding:"14px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 },
   footerBrand: { fontSize:13, fontWeight:700, color:"#f1f5f9", letterSpacing:"0.04em" },
   footerMeta:  { fontSize:11, color:"#334155" },
